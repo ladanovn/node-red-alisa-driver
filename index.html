@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Alisa-driver', {
+        category: 'Homebot',
+        color: '#a6bbcf',
+        defaults: {
+            name: {
+                value: 'Alisa-driver'
+            },
+            port: {
+                value: 3002,
+                required: true
+            },
+            parser_host: {
+                value: 'localhost',
+                required: true
+            },
+            parser_port: {
+                value: 3001,
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "bridge.png",
+        label: function () {
+            return this.name || "Alisa-driver";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Parser">
+    <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name </label>    
+    <input type="text" id="node-input-name" placeholder="Alisa-driver">
+  </div>
+  <div class="form-row">
+    <label for="node-input-port">Node port</label>
+    <input type="text" id="node-input-port" placeholder="3002">
+  </div>
+  <div class="form-row">
+      <label for="node-input-parser_host">Parser host</label>
+      <input type="text" id="node-input-parser_host" placeholder="localhost">
+  </div>
+<div class="form-row">
+    <label for="node-input-parser_port">Server port</label>
+    <input type="text" id="node-input-parser_host" placeholder="3001">
+</div>
+</script>
+
+<script type="text/x-red" data-help-name="Alisa-driver">
+
+</script>
