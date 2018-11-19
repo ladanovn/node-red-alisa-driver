@@ -1,7 +1,8 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const axios = require('axios');
 
-module.exports = async function (RED) {
+module.exports = function (RED) {
 
     function AlisaDriverNode(config) {
         RED.nodes.createNode(this, config);
@@ -10,6 +11,14 @@ module.exports = async function (RED) {
         const nodeContext = node.context();
 
         const app = express();
+
+        app.use(
+            bodyParser.urlencoded({
+                extended: false
+            })
+        );
+
+        app.use(bodyParser.json());
 
         app.post('/', async function (req, res) {
 
@@ -60,7 +69,15 @@ module.exports = async function (RED) {
                         },
                         source_text: req.body.request.command
                     });
-                    console.log(request)
+                    res.json({
+                        version: req.body.version,
+                        session: req.body.session,
+                        response: {
+                            text: request.data.handler.text,
+                            end_session: false
+                        }
+                    });
+                    console.log(request.data)
                 } catch (error) {
                     res.json({
                         version: req.body.version,
@@ -78,7 +95,9 @@ module.exports = async function (RED) {
             res.sendStatus(404);
         });
 
-        app.listen(config.port);
+        const httpServer = require("http").createServer(app);
+        httpServer.close();
+        httpServer.listen(config.port);
     }
 
     RED.nodes.registerType("Alisa-driver", AlisaDriverNode);
