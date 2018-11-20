@@ -2,10 +2,12 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const http = require("http");
-const cors = require('cors')
 const app = express();
 
-app.use(cors())
+const device = require('./commands/Device');
+const light = require('./commands/Light');
+const notFound = require('./commands/NotFound');
+
 app.use(
     bodyParser.urlencoded({
         extended: false
@@ -66,7 +68,6 @@ app.post('/', async function (req, res) {
         } = JSON.parse(process.env.ALISA_CONFIG);
 
         try {
-            // console.log(req.body.request)
             const request = await axios.post(`http://${parser_host}:${parser_port}/`, {
                 sender: {
                     type: 'Alisa'
@@ -74,15 +75,17 @@ app.post('/', async function (req, res) {
                 source_text: req.body.request.command
             });
 
-            res.json({
-                version: req.body.version,
-                session: req.body.session,
-                response: {
-                    text: request.data.handler.text,
-                    end_session: false
-                }
-            });
-            console.log(request.data);
+            switch (request.data.parser.type) {
+                case 0:
+                    light(req, res, request.data);
+                    break;
+                case 1:
+                    device(req, res, request.data);
+                    break;
+                case 2:
+                    notFound(req, res, request.data);
+                    break;
+            }
 
         } catch (error) {
             res.json({

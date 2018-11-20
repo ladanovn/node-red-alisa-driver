@@ -9,11 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/body-parser": "^1.17.0",
-    "@types/cors": "^2.8.4",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "cors": "^2.8.5",
     "express": "^4.16.4",
     "http": "0.0.0"
   },
