@@ -16,7 +16,7 @@
   },
   "node-red": {
     "nodes": {
-      "alisa-driver": "index.js"
+      "alise-driver": "index.js"
     }
   }
 }
